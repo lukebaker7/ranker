@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+<!-- (A) DUMMY PRODUCT -->
+<div class="alert alert-danger" role="alert" id="1" hidden></div>
+<div class="alert alert-success" role="alert" id="2" hidden>
+</div>
+<div class="product mx-auto" id="item"></div>
+<!-- <button class="btn btn-primary" onclick="loadProduct()">Skip</button> -->
+   
+  <script>
+    flash = function(msg) {
+      alert(msg);
+    }
+
+
+    async function loadProduct() {
+      let prod = document.getElementById("item");
+      let response = await fetch('/items/v2')
+      //console.log(response)
+      let data = await response.json()
+      //console.log(data);
+      let item_id = data.id;
+      let score = data.score;
+      
+      prod.innerHTML = `
+        <img class="img" src="${data.photo_url}" alt="${data.name}">
+        <div class="name">${data.name}</div>
+        <div class="desc">${data.description}</div>
+        <div class="rate">Yours: <div id="stars_"></div></div>
+        <button class="btn btn-primary" onclick="loadProduct()">Skip</button>`;
+
+        //// <div class="avg">Rating: ${data.score}</div>
+    
+
+    const starsElement = document.getElementById("stars_");
+    if (starsElement) {
+      starry({
+        target: document.getElementById("stars_"),
+    max: 5,
+    now: 0,
+    click : stars => {
+      // alert("You rated "+stars +" stars!");
+      let data = new FormData();
+      data.append("rating", stars);
+      fetch(`/add_review/${item_id}`, {
+        method: "post",
+        body: data
+      })
+      .then(res => res.text())
+      .then(txt => {
+        console.log(txt);
+        console.log(stars, score);
+        if (stars < score) {
+          document.getElementById("2").hidden = true;
+          document.getElementById("1").hidden = false;
+          document.getElementById("1").innerHTML = "You downvoted this item!";
+        } else {
+          document.getElementById("1").hidden = true;
+          document.getElementById("2").hidden = false;
+          document.getElementById("2").innerHTML = "You upvoted this item!";
+        }
+       
+        loadProduct();
+      });
+    }
+      })
+    }
+    }
+    
+    loadProduct();
+  </script>
+
+{% endblock %}
+

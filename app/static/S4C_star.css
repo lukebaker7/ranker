@@ -1,0 +1,55 @@
+/* (A) ENTIRE PAGE */
+
+  
+  /* (B) PRODUCT DOCKET */
+  .product {
+    padding: 20px;
+    max-width: 300px;
+    border: 2px solid #eee;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    
+  }
+  .product .img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .product .name {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 10px;
+
+  }
+  .product .desc { color: #7c7c7c; }
+  .product .avg { margin: 15px 0 5px 0; }
+  .product .rate {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* (C) STAR RATING */
+  /* (C1) STAR RATING WRAPPER */
+  /* S4C_star.css */
+.starwrap {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.star {
+  font-size: 24px;
+  color: #d1d1d1;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+.star.on i {
+  color: #ffe000;
+}
+
+.star i {
+  font-style: normal;
+  transition: color 0.2s;
+}
